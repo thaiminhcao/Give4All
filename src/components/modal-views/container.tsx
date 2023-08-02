@@ -1,12 +1,23 @@
 import cn from 'classnames';
 import { Fragment, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { Dialog } from '@/components/ui/dialog';
 import { Transition } from '@/components/ui/transition';
 import Button from '@/components/ui/button';
 import { Close } from '@/components/icons/close';
 import { useModal, MODAL_VIEW } from '@/components/modal-views/context';
 
+const SearchView = dynamic(() => import('@/components/search/view'));
+
+function renderModalContent(view: MODAL_VIEW | string) {
+  switch (view) {
+    case 'SEARCH_VIEW':
+      return <SearchView />;
+    default:
+      return null;
+  }
+}
 
 export default function ModalContainer() {
   const router = useRouter();
@@ -68,11 +79,12 @@ export default function ModalContainer() {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-105"
         >
-          <div
+           <div
             className={cn(
-              'relative z-50 inline-block w-full text-left align-middle xs:w-auto',
+              'relative z-50 inline-block w-full text-left align-middle xs:w-auto'
             )}
           >
+            {view && renderModalContent(view)}
           </div>
         </Transition.Child>
       </Dialog>

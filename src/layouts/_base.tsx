@@ -1,15 +1,17 @@
 import Logo from '@/components/ui/logo';
 import cn from 'classnames';
 import Hamburger from '@/components/ui/hamburger';
+import ConnectWallet from '@/components/ui/connect-wallet';
 import { MenuItems } from '@/layouts/sidebar/_layout-menu';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useDrawer } from '@/components/drawer-views/context';
 import { useWindowScroll } from '@/lib/hooks/use-window-scroll';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-
+import SearchButton from '@/components/search/button';
 
 function HeaderRightArea() {
+  const isMounted = useIsMounted();
+  const breakpoint = useBreakpoint();
   const { openDrawer, isOpen } = useDrawer();
   return (
     <div className="order-last flex shrink-0 items-center">
@@ -17,11 +19,16 @@ function HeaderRightArea() {
       </div>
 
       <div className="hidden gap-6 lg:flex 2xl:gap-8">
-        <ConnectButton />
+        {isMounted && ['xs', 'sm', 'md', 'lg'].indexOf(breakpoint) == -1 && (
+          <div>
+            <SearchButton variant="transparent" className="dark:text-white" />
+          </div>
+        )}
+        <ConnectWallet />
       </div>
 
       <div className="flex items-center lg:hidden">
-        <ConnectButton />
+        <ConnectWallet />
         <Hamburger
           isOpen={isOpen}
           onClick={() => openDrawer('DRAWER_MENU')}
