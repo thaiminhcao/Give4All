@@ -52,7 +52,7 @@ export default function ConnectWallet() {
 
               return (
                 <div style={{ display: 'flex', gap: 12 }}>
-                  <button className='rounded-lg bg-cyan-100 p-2 px-5 text-cyan-900 font-extrabold'
+                  <button className='rounded-lg bg-cyan-100 p-2 px-5 text-cyan-900 font-extrabold '
                     onClick={openChainModal}
                     style={{ display: 'flex', alignItems: 'center' }}
                     type="button"
