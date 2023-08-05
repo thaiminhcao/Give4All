@@ -120,6 +120,7 @@ module.exports = {
           '0%': { transform: 'scale(0)' },
           '100%': { transform: 'scale(1)' },
         },
+
       },
     },
   },
