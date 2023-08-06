@@ -9,11 +9,16 @@ import { Close } from '@/components/icons/close';
 import { useModal, MODAL_VIEW } from '@/components/modal-views/context';
 
 const SearchView = dynamic(() => import('@/components/search/view'));
-
+const DonateView = dynamic(() => import('@/components/project/donation-form'));
+const DenyView = dynamic(() => import('@/components/project/deny-form'));
 function renderModalContent(view: MODAL_VIEW | string) {
   switch (view) {
     case 'SEARCH_VIEW':
       return <SearchView />;
+    case 'DONATION_VIEW':
+      return <DonateView />;
+    case 'DENY_VIEW':
+      return <DenyView />;
     default:
       return null;
   }
@@ -79,7 +84,7 @@ export default function ModalContainer() {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-105"
         >
-           <div
+          <div
             className={cn(
               'relative z-50 inline-block w-full text-left align-middle xs:w-auto'
             )}

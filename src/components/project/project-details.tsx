@@ -1,5 +1,11 @@
 import { Star } from '@/components/icons/star-icon';
+import DonationForm from './donation-form';
+import DenyForm from './deny-form';
+import { useState } from 'react';
+import { useModal, MODAL_VIEW } from '@/components/modal-views/context';
+
 export default function ProjectDetails() {
+  const { isOpen, view, data, openModal, closeModal } = useModal();
   return (
     <>
       <div className="text-black text-4xl font-semibold mb-4 ">
@@ -43,11 +49,22 @@ export default function ProjectDetails() {
             </div>
             <div className="w-96 h-1 bg-white rounded-sm border border-cyan-700" />
             <div className="flex gap-x-8">
-              <button className="Rectangle60 w-36 h-10 bg-yellow-500 rounded-lg">Donate</button>
-              <button className="Rectangle61 w-36 h-10 bg-white rounded-lg border border-cyan-700 ml-4">Deny</button>
-            </div>
-          </div>
+              <button
+                className="Rectangle60 w-36 h-10 bg-yellow-500 rounded-lg"
+                onClick={() => openModal('DONATION_VIEW')}
+              >
+                Donate
+              </button>
+              <button
+                className="Rectangle60 w-36 h-10 bg-yellow-500 rounded-lg"
+                onClick={() => openModal('DENY_VIEW')}
+              >
+                Deny
+              </button>
 
+            </div>
+
+          </div>
           <div className='ml-40 w-2/5 h-96'>
             <div className=" bg-white rounded-lg border border-cyan-700 text-center text-black text-2xl font-semibold ">
               TOP RATED
@@ -69,7 +86,7 @@ export default function ProjectDetails() {
               <div className=" flex pt-5 ml-6 mr-4">
                 <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
 
-                <h1 className='text-black text-base font-semibold pl-3 pt-3 pl-3 pt-3'>Tail Black</h1>
+                <h1 className='text-black text-base font-semibold  pl-3 pt-3'>Tail Black</h1>
               </div>
               <div className=" flex pt-5 ml-6 mr-4 mb-8">
                 <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
