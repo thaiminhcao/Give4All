@@ -1,4 +1,4 @@
-
+import { Star } from '@/components/icons/star-icon';
 export default function ProjectDetails() {
   return (
     <>
@@ -20,15 +20,22 @@ export default function ProjectDetails() {
             </div>
             <div className="w-96 text-black text-4xl font-semibold">Need A Close Up Room For Young People</div>
             <div className="grid grid-cols-3 gap-x-16">
-              <h1 className="w-36 h-32 bg-cyan-100 rounded text-center text-black text-sm font-normal flex items-center justify-center">
-                Days Left
-              </h1>
-              <h1 className="w-36 h-32 bg-cyan-100 rounded text-center text-black text-sm font-normal flex items-center justify-center">
-                Supporters
-              </h1>
-              <h1 className="w-36 h-32 bg-cyan-100 rounded text-center text-black text-sm font-normal flex items-center justify-center">
-                Opponents
-              </h1>
+              <div className="w-36 h-32 bg-cyan-100 rounded ">
+                <h1 className='text-center text-black  font-normal justify-center text-3xl mt-8'>29</h1>
+                <h1 className='text-center text-black text-sm font-normal  justify-center'>Days Left</h1>
+
+              </div>
+
+              <div className="w-36 h-32 bg-cyan-100 rounded ">
+                <h1 className='text-center text-black  font-normal  justify-center text-3xl mt-8'>30000</h1>
+                <h1 className='text-center text-black text-sm font-normal  justify-center '>Supporters</h1>
+
+              </div>
+              <div className="w-36 h-32 bg-cyan-100 rounded ">
+                <h1 className='text-center text-black text-3xl font-normal  justify-center mt-8'>45</h1>
+                <h1 className='text-center text-black text-sm font-normal  justify-center'>Opponents</h1>
+
+              </div>
             </div>
             <div className="flex">
               <h1 className="w-32 text-black text-xl font-semibold">Raised of</h1>
@@ -70,7 +77,14 @@ export default function ProjectDetails() {
                 <h1 className='text-black text-base font-semibold pl-3 pt-3'>Tail Black</h1>
               </div>
             </div>
-            <div className="mt-14 text-black text-3xl font-semibold">Rating</div>
+            <div className="mt-14 flex flex-nowrap">
+              <h1 className="text-black text-3xl font-semibold">Rating</h1>
+              <Star className="h-auto w-3.5 sm:w-auto ml-4" />
+              <Star className="h-auto w-3.5 sm:w-auto ml-4" />
+              <Star className="h-auto w-3.5 sm:w-auto ml-4" />
+              <Star className="h-auto w-3.5 sm:w-auto ml-4" />
+              <Star className="h-auto w-3.5 sm:w-auto ml-4" />
+            </div>
           </div>
 
         </div>
