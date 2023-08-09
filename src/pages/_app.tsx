@@ -14,6 +14,9 @@ import '@/assets/css/range-slider.css';
 
 // wagmi & rainbow kit
 import '@rainbow-me/rainbowkit/styles.css';
+// Import the ToastContainer component from react-toastify to display notifications.
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 import {
   getDefaultWallets,
   RainbowKitProvider,
@@ -74,6 +77,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             defaultTheme="light"
           >
               <div className={`${firaCode.variable} font-body`}>
+                <ToastContainer position={'bottom-center'} />
                 {getLayout(<Component {...pageProps} />)}
                 <ModalsContainer />
                 <DrawersContainer />
