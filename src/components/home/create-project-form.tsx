@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ActiveLink from '@/components/ui/links/active-link';
 import Input from '@/components/ui/forms/input';
 import { LongArrowUp } from '@/components/icons/long-arrow-up';
@@ -8,18 +8,21 @@ import { useContractCall } from "@/lib/contract/useContractRead";
 // Import the toast library to display notifications
 import { toast } from "react-toastify";
 import Datepicker from "react-tailwindcss-datepicker"; 
+import { useRouter } from 'next/navigation';
 
 export default function CreateProjectForm() {
+    const { push } = useRouter();
+
     // The following states are used to store the values of the input fields
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [imageURL, setImageURL] = useState("");
     const [raised, setRaised] = useState<string | number>(0);
     const [expiresAt, setExpiresAt] = useState({ 
-      startDate: null,
+      startDate: (new Date((new Date()).getTime() + (24 * 60 * 60 * 1000))),
       endDate: null 
     }); 
-    const [tag, setTag] = useState("");
+    const [tag, setTag] = useState([]); // optional
 
     const handleDateChange = (newValue:any) => {
       setExpiresAt(newValue); 
@@ -28,7 +31,6 @@ export default function CreateProjectForm() {
 
     // call get project Tax
     const { data : projectTax}: any = useContractCall("projectTax");
-
     // Clear the input fields after the project is added
     const clearForm = () => {
       setTitle("");
@@ -36,10 +38,10 @@ export default function CreateProjectForm() {
       setImageURL("");
       setRaised(0);
       setExpiresAt({
-        startDate: null,
+        startDate: new Date((new Date()).getTime() + (24 * 60 * 60 * 1000)),
         endDate: null 
       });
-      setTag("");
+      setTag([]);
     };
 
     // Validate a url
@@ -71,43 +73,40 @@ export default function CreateProjectForm() {
         return false;
       }
       if (description.trim() == '' || description.length < 2) {
-        toast.warn("Please enter a valid project location (2 characters or more & not only whitespace)")
+        toast.warn("Please enter a valid project description")
         return false;
       }
-      if (expiresAt.startDate == '' || expiresAt.endDate == '') {
+      if (expiresAt.endDate == '') {
         toast.warn("Please enter a valid project expire time")
-        return false;
-      }
-      if (tag.trim() == '' || tag.length < 2) {
-        toast.warn("Please enter a valid project tags (2 characters or more & not only whitespace)")
         return false;
       }
       return true
     }
 
-     // Use the useContractSend hook to use our writeProduct function on the marketplace contract and add a product to the marketplace
-    // const { writeAsync: createProject } = useContractSend("writeProduct", [
-    //   debouncedProductName,
-    //   debouncedProductImage,
-    //   debouncedProductDescription,
-    //   debouncedProductLocation,
-    //   productPriceInWei,
-    // ]);
+    // Use the useContractSend hook to use our createProject function
+    const { writeAsync: createProject } = useContractSend("createProject", projectTax, [
+      title,
+      description,
+      imageURL,
+      raised,
+      (Date.parse(expiresAt.startDate))/1000, // convert to time stamp
+      tag
+    ]);
 
     // Define function that handles the creation of a project through the contract
     const handleCreateProject = async () => {
       setLoading("Creating...");
       if (!isComplete()) throw new Error("Please fill all fields");
-      // if (!createProject) {
-      //   throw "Failed to create project";
-      // }
-      // // Create the project by calling the writeproject function on the contract
-      // const purchaseTx = await createProject();
-      // setLoading("Waiting for confirmation...");
-      // // Wait for the transaction to be mined
-      // await purchaseTx.wait();
-      // // Close the modal and clear the input fields after the project is added
-      // clearForm();
+      if (!createProject) {
+        throw "Failed to create project";
+      }
+      // Create the project by calling the writeproject function on the contract
+      const purchaseTx = await createProject();
+      setLoading("Waiting for confirmation...");
+      // Wait for the transaction to be mined
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      // Clear the input fields after the project is added
+      clearForm();
     };
 
     // Define function that handles the creation of a project, if a user submits the project form
@@ -118,8 +117,10 @@ export default function CreateProjectForm() {
         await toast.promise(handleCreateProject(), {
           pending: "Creating project...",
           success: "project created successfully",
-          error: "Something went wrong. Try again.",
         });
+        // redirect to thank you page
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        push('/thank-you')
         // Display an error message if something goes wrong
       } catch (e: any) {
         console.log({ e });
@@ -171,7 +172,11 @@ export default function CreateProjectForm() {
               <p className="relative text-gray-500 mb-2">
                 Tell us more comprehensive overview of your project, highlighting its key features, and goals.
               </p>
-              <Textarea placeholder="Provide a detailed description of your item" />
+              <Textarea placeholder="Provide a detailed description of your item"
+                value={description}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}/>
             </div>
             <div className="mx-auto w-full pt-4">
               <h2 className="font-bold lg:text-2xl text-xl">
@@ -228,7 +233,7 @@ export default function CreateProjectForm() {
               </p>
               <Input
                 onChange={(e) => {
-                  setTag(e.target.value);
+                  setTag([e.target.value]);
                 }}
                 placeholder="Tag"
                 inputClassName="spin-button-hidden"
