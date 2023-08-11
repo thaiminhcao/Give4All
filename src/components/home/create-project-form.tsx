@@ -240,13 +240,11 @@ export default function CreateProjectForm() {
             />
           </div>
           <div className="p-6 flex gap-10 xs:mt-8 justify-center">
-            {/* <ActiveLink href="/thank-you"> */}
             <button type="submit"
               disabled={!!loading || !isComplete}
               className="rounded-lg text-white p-1 px-10 bg-yellow-500 text-xl font-bold hover:bg-yellow-400">
               {loading ? loading : "Public"}
             </button>
-            {/* </ActiveLink> */}
           </div>
         </form>
       </div>

@@ -3,6 +3,16 @@
 import React, { useState } from 'react';
 function DenyForm() {
 
+    // const [username, setUsername] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [moreInfo, setMoreInfo] = useState('');
+    // const [comment, setComment] = useState('');
+    // const userData = {
+    //     username,
+    //     email,
+    //     moreInfo,
+    //     comment
+    // };
     return (
         <div className="relative z-50  bg-white rounded-lg justify-items-center ">
             <form action="" className="  p-8">

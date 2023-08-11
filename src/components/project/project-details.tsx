@@ -1,41 +1,11 @@
 import { Star } from '@/components/icons/star-icon';
-import { useModal } from '@/components/modal-views/context';
-import { useContractCall } from '@/lib/contract/useContractRead';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-interface GetRates {
-  user: string;
-  donationTime: number;
-  score: number;
-}
-interface Project {
-  owner: string;
-  title: string;
-  description: string;
-  imageURL: string;
-  raised: number;
-  createAt: number;
-  expiresAt: number;
-  balanceOf: number;
-  tags: string[];
-  status: string;
-}
+import DonationForm from './donation-form';
+import DenyForm from './deny-form';
+import { useState } from 'react';
+import { useModal, MODAL_VIEW } from '@/components/modal-views/context';
+
 export default function ProjectDetails() {
-  const { openModal } = useModal();
-  const router = useRouter();
-  const { id } = router.query;
-
-
-  const { data: getProject }: any = useContractCall("getProject", [Number(id)], true);
-  console.log(getProject);
-  const project = getProject as Project
-  const daysLeft = Date.now() - project.expiresAt
-
-  const { getRates }: any = useContractCall("getRates", [Number(id)]);
-  const rates = getRates as GetRates[] ?? [];
-  const sortedData = [...rates].sort((a, b) => b.score - a.score);
-  const top5Users = sortedData.slice(0, 5).map(item => item.user);
+  const { isOpen, view, data, openModal, closeModal } = useModal();
   return (
     <>
       <div className="text-black text-4xl font-semibold mb-4 ">
@@ -45,22 +15,19 @@ export default function ProjectDetails() {
         <div className="flex flex-nowrap ">
 
           <div className="w-3/5 h-auto rounded-lg mr-4">
-            <img className="w-full h-full" src={project.imageURL} />
+            <img className="w-full h-full" src="https://via.placeholder.com/580x606" />
           </div>
 
           <div className="w-3/5 p-5 pt-4 xs:p-6 xs:pt-5 space-y-4 ml-40">
-            <div className="w-44 h-11 bg-cyan-700 rounded text-center text-white text-2xl font-semibold justify-center">{project.tags}</div>
-            <div className="flex flex-col">
-              <h1 className="w-24 text-black text-base font-semibold">
-                {project.owner}
-              </h1>
+            <div className="w-44 h-11 bg-cyan-700 rounded text-center text-white text-2xl font-semibold justify-center">Education</div>
+            <div className="grid grid-cols-2">
               <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
               <div className="UCalendarAlt w-6 h-6 relative" />
             </div>
-            <div className="w-96 text-black text-4xl font-semibold">{project.title}</div>
+            <div className="w-96 text-black text-4xl font-semibold">Need A Close Up Room For Young People</div>
             <div className="grid grid-cols-3 gap-x-16">
               <div className="w-36 h-32 bg-cyan-100 rounded ">
-                <h1 className='text-center text-black  font-normal justify-center text-3xl mt-8'>{daysLeft}</h1>
+                <h1 className='text-center text-black  font-normal justify-center text-3xl mt-8'>29</h1>
                 <h1 className='text-center text-black text-sm font-normal  justify-center'>Days Left</h1>
 
               </div>
@@ -78,7 +45,7 @@ export default function ProjectDetails() {
             </div>
             <div className="flex">
               <h1 className="w-32 text-black text-xl font-semibold">Raised of</h1>
-              <h1 className="w-32 text-black text-xl font-semibold">{project.raised}</h1>
+              <h1 className="w-32 text-black text-xl font-semibold">45,000,000</h1>
             </div>
             <div className="w-96 h-1 bg-white rounded-sm border border-cyan-700" />
             <div className="flex gap-x-8">
@@ -104,27 +71,27 @@ export default function ProjectDetails() {
               <div className="flex pt-5 ml-6 mr-4 ">
                 <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
 
-                <h1 className='text-black text-base font-semibold pl-3 pt-3'> {top5Users[0]} </h1>
+                <h1 className='text-black text-base font-semibold pl-3 pt-3'> Harry Jame</h1>
               </div>
               <div className=" flex pt-5 ml-6 mr-4">
                 <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
 
-                <h1 className='text-black text-base font-semibold pl-3 pt-3'> {top5Users[1]}</h1>
+                <h1 className='text-black text-base font-semibold pl-3 pt-3'> Nancy Shin</h1>
               </div>
               <div className="flex pt-5 ml-6 mr-4">
                 <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
 
-                <h1 className='text-black text-base font-semibold pl-3 pt-3'>{top5Users[2]}</h1>
+                <h1 className='text-black text-base font-semibold pl-3 pt-3'>Robert Johsua</h1>
               </div>
               <div className=" flex pt-5 ml-6 mr-4">
                 <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
 
-                <h1 className='text-black text-base font-semibold  pl-3 pt-3'>{top5Users[3]}</h1>
+                <h1 className='text-black text-base font-semibold  pl-3 pt-3'>Tail Black</h1>
               </div>
               <div className=" flex pt-5 ml-6 mr-4 mb-8">
                 <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
 
-                <h1 className='text-black text-base font-semibold pl-3 pt-3'>{top5Users[4]}</h1>
+                <h1 className='text-black text-base font-semibold pl-3 pt-3'>Tail Black</h1>
               </div>
             </div>
             <div className="mt-14 flex flex-nowrap">
@@ -147,9 +114,9 @@ export default function ProjectDetails() {
         <div className='flex flex-nowrap'>
           <div className='w-4/5 h-auto'>
             <h1 className="w-4/5 text-black text-base font-normal mt-4">
-              {project.description}
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corp oris suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illume.
             </h1>
-            <img className="w-4/5 rounded-lg" src={project.imageURL} />
+            <img className="w-4/5 rounded-lg" src="https://via.placeholder.com/770x611" />
           </div>
           <div className="w-2/5">
             <div className=" bg-white rounded-lg border border-cyan-700 text-center text-black text-2xl font-semibold mt-8">
