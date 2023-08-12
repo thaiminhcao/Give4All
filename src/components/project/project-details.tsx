@@ -1,39 +1,39 @@
 import { Star } from '@/components/icons/star-icon';
 import { useModal } from '@/components/modal-views/context';
-import { useContractCall } from '@/lib/contract/useContractRead';
+import { useContractCalls } from '@/lib/contract/useContractReads';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 interface GetRates {
   user: string;
   donationTime: number;
   score: number;
 }
 interface Project {
-  owner: string;
-  title: string;
-  description: string;
-  imageURL: string;
-  raised: number;
-  createAt: number;
-  expiresAt: number;
   balanceOf: number;
-  tags: string[];
+  createAt: number;
+  description: string;
+  expiresAt: number;
+  id: number;
+  imageURL: string;
+  owner: string;
+  raised: number;
   status: string;
+  tags: string[];
+  title: string;
 }
 export default function ProjectDetails() {
   const { openModal } = useModal();
   const router = useRouter();
   const { id } = router.query;
-
-
-  const { data: getProject }: any = useContractCall("getProject", [Number(id)], true);
-  console.log(getProject);
-  const project = getProject as Project
-  const daysLeft = Date.now() - project.expiresAt
-
-  const { getRates }: any = useContractCall("getRates", [Number(id)]);
-  const rates = getRates as GetRates[] ?? [];
+  const getProject = useContractCalls(["getProject", "getRates"], [Number(id)]);
+  console.log(getProject[0].data)
+  if (!getProject[0].data || getProject[1].data[0].status === "failure") {
+    return;
+  }
+  const project = getProject[0].data[0].result as Project;
+  const daysLeft = Math.round((Number(project.expiresAt) - (Date.now() / 1000)) / 86400)
+  const rates = getProject[1].data[0].result as GetRates[] ?? [];
   const sortedData = [...rates].sort((a, b) => b.score - a.score);
   const top5Users = sortedData.slice(0, 5).map(item => item.user);
   return (
