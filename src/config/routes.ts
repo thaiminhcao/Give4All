@@ -4,7 +4,8 @@ const routes = {
   project: '/project',
   join: '/join-now',
   create_project: '/create-project',
-  create_project_form: '/create-project-form'
+  create_project_form: '/create-project-form',
+  explore_our_projects: '/explore-our-projects',
 };
 
 export default routes;

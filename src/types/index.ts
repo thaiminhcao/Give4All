@@ -18,3 +18,17 @@ export interface Attachment {
   original: string;
   thumbnail: string;
 }
+
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  balanceOf: bigint;
+  createAt: bigint;
+  expiresAt: bigint;
+  imageURL: string;
+  owner: string;
+  raised: bigint;
+  status: number;
+  tags: string[];
+}

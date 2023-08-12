@@ -1,0 +1,47 @@
+[
+    {
+      "author": "Jayme Petracci",
+      "title": "This is awesome!",
+      "category": "Nature",
+      "avaImgSrc": "https://randomuser.me/api/portraits/men/46.jpg",
+      "bannerImgSrc": "https://via.placeholder.com/325x213",
+      "raisedOf": 45000000,
+      "date": "25 February 2023"
+    },
+    {
+      "author": "Liuka Kivell",
+      "title": "The best tutorial!",
+      "category": "Education",
+      "avaImgSrc": "https://randomuser.me/api/portraits/men/48.jpg",
+      "bannerImgSrc": "https://via.placeholder.com/325x213",
+      "raisedOf": 45000000,
+      "date": "25 February 2023"
+    },
+    {
+      "author": "Chrysler Grinikhinov",
+      "title": "Revenue increased by 50%",
+      "category": "Education",
+      "avaImgSrc": "https://randomuser.me/api/portraits/men/49.jpg",
+      "bannerImgSrc": "https://via.placeholder.com/325x213",
+      "raisedOf": 45000000,
+      "date": "25 February 2023"
+    },
+    {
+      "author": "Kessiah Cornbell",
+      "title": "Lorem ipsum",
+      "category": "Start Up",
+      "avaImgSrc": "https://randomuser.me/api/portraits/men/50.jpg",
+      "bannerImgSrc": "https://via.placeholder.com/325x213",
+      "raisedOf": 45000000,
+      "date": "25 February 2023"
+    },
+    {
+      "author": "Wash Pont",
+      "title": "The best overall service",
+      "category": "Nature",
+      "avaImgSrc": "https://randomuser.me/api/portraits/men/51.jpg",
+      "bannerImgSrc": "https://via.placeholder.com/325x213",
+      "raisedOf": 45000000,
+      "date": "25 February 2023"
+    }
+  ]
