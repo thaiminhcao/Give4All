@@ -9,8 +9,8 @@ import { Close } from '@/components/icons/close';
 import { useModal, MODAL_VIEW } from '@/components/modal-views/context';
 
 const SearchView = dynamic(() => import('@/components/search/view'));
-const DonateView = dynamic(() => import('@/components/project/donation-form'));
-const DenyView = dynamic(() => import('@/components/project/deny-form'));
+const DonateView = dynamic(() => import('@/components/ui/forms/donation-form'));
+const DenyView = dynamic(() => import('@/components/ui/forms/deny-form'));
 function renderModalContent(view: MODAL_VIEW | string) {
   switch (view) {
     case 'SEARCH_VIEW':

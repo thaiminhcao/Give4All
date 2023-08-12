@@ -1,41 +1,41 @@
 import { Star } from '@/components/icons/star-icon';
 import { useModal } from '@/components/modal-views/context';
 import { useContractCalls } from '@/lib/contract/useContractReads';
+import { Project, GetRates, Donations } from '@/types';
+import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { toast } from 'react-toastify';
-interface GetRates {
-  user: string;
-  donationTime: number;
-  score: number;
-}
-interface Project {
-  balanceOf: number;
-  createAt: number;
-  description: string;
-  expiresAt: number;
-  id: number;
-  imageURL: string;
-  owner: string;
-  raised: number;
-  status: string;
-  tags: string[];
-  title: string;
-}
+
 export default function ProjectDetails() {
   const { openModal } = useModal();
+
+  //get id from params
   const router = useRouter();
   const { id } = router.query;
-  const getProject = useContractCalls(["getProject", "getRates"], [Number(id)]);
-  console.log(getProject[0].data)
+  const getProject = useContractCalls(["getProject", "getRates", "getDonations"], [Number(id)]);
+
+  // cancle render ui when project does not exist
   if (!getProject[0].data || getProject[1].data[0].status === "failure") {
     return;
   }
   const project = getProject[0].data[0].result as Project;
+
+  // make address shorter and create percentage raised
+  const shortenAddress = (address: string) => {
+    return address.slice(0, 6) + "..." + address.slice(-4);
+  };
+  const percentRaised = Number(project.balanceOf / project.raised) * 100;
+  const displayPercenRaised = (percentRaised <= 100 ? percentRaised : 100) + "%";
+
+  // get top 5 users with the highest score
   const daysLeft = Math.round((Number(project.expiresAt) - (Date.now() / 1000)) / 86400)
   const rates = getProject[1].data[0].result as GetRates[] ?? [];
   const sortedData = [...rates].sort((a, b) => b.score - a.score);
   const top5Users = sortedData.slice(0, 5).map(item => item.user);
+
+  console.log(getProject[2].data)
+  // get number of supporters
+  const supporters = getProject[2].data[0].result.length;
   return (
     <>
       <div className="text-black text-4xl font-semibold mb-4 ">
@@ -52,7 +52,7 @@ export default function ProjectDetails() {
             <div className="w-44 h-11 bg-cyan-700 rounded text-center text-white text-2xl font-semibold justify-center">{project.tags}</div>
             <div className="flex flex-col">
               <h1 className="w-24 text-black text-base font-semibold">
-                {project.owner}
+                {shortenAddress(project.owner)}
               </h1>
               <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/50x50" />
               <div className="UCalendarAlt w-6 h-6 relative" />
@@ -66,7 +66,7 @@ export default function ProjectDetails() {
               </div>
 
               <div className="w-36 h-32 bg-cyan-100 rounded ">
-                <h1 className='text-center text-black  font-normal  justify-center text-3xl mt-8'>30000</h1>
+                <h1 className='text-center text-black  font-normal  justify-center text-3xl mt-8'>{supporters}</h1>
                 <h1 className='text-center text-black text-sm font-normal  justify-center '>Supporters</h1>
 
               </div>
@@ -77,10 +77,13 @@ export default function ProjectDetails() {
               </div>
             </div>
             <div className="flex">
+
               <h1 className="w-32 text-black text-xl font-semibold">Raised of</h1>
-              <h1 className="w-32 text-black text-xl font-semibold">{project.raised}</h1>
+              <h1 className="w-32 text-black text-xl font-semibold">{project.raised.toString()}</h1>
             </div>
-            <div className="w-96 h-1 bg-white rounded-sm border border-cyan-700" />
+            <div className="mt-2 w-full bg-white rounded-full h-1 border border-cyan-700 dark:bg-gray-700">
+              <div className="bg-cyan-700 h-full rounded-full" style={{ width: displayPercenRaised }}></div>
+            </div>
             <div className="flex gap-x-8">
               <button
                 className="Rectangle60 w-36 h-10 bg-yellow-500 rounded-lg"
