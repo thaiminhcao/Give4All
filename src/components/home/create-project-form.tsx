@@ -22,7 +22,7 @@ export default function CreateProjectForm() {
     startDate: (new Date((new Date()).getTime() + (24 * 60 * 60 * 1000))),
     endDate: null
   });
-  const [tag, setTag] = useState([]); // optional
+  const [tag, setTag] = useState<string[]>([]); // optional
 
   const handleDateChange = (newValue: any) => {
     setExpiresAt(newValue);
@@ -89,7 +89,7 @@ export default function CreateProjectForm() {
     description,
     imageURL,
     raised,
-    (Date.parse(expiresAt.startDate)) / 1000, // convert to time stamp
+    (Date.parse(expiresAt.startDate.toString())) / 1000, // convert to time stamp
     tag
   ]);
 
