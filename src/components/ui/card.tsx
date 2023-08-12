@@ -2,7 +2,9 @@ import Image from "next/image";
 import { Project } from "@/types";
 
 const Card = (props: Project) => {
-  const percentRaised = (props.balanceOf / props.raised) * BigInt(100) + "%";
+  const percentRaised = Number(props.balanceOf / props.raised) * 100;
+
+  const displayPercenRaised = (percentRaised <= 100 ? percentRaised : 100) + "%";
 
   const shortenAddress = (address: string) => {
     return address.slice(0, 6) + "..." + address.slice(-4);
@@ -47,7 +49,7 @@ const Card = (props: Project) => {
           <div className="ml-auto text-black text-xs font-medium">{convertTimestampToDate(props.createAt)}</div>
         </div>
         <div className="mt-2 w-full bg-white rounded-full h-1 border border-cyan-700 dark:bg-gray-700">
-          <div className="bg-cyan-700 h-full rounded-full" style={{width: percentRaised}}></div>
+          <div className="bg-cyan-700 h-full rounded-full" style={{width: displayPercenRaised}}></div>
         </div>
       </div>
     </div>
