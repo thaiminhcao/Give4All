@@ -3,7 +3,6 @@ import { Project } from "@/types";
 
 const Card = (props: Project) => {
   const percentRaised = Number(props.balanceOf / props.raised) * 100;
-
   const displayPercenRaised = (percentRaised <= 100 ? percentRaised : 100) + "%";
 
   const shortenAddress = (address: string) => {
@@ -18,6 +17,12 @@ const Card = (props: Project) => {
 
     return `${day} ${monthName} ${year}`;
   };
+
+  const weiToEth = (wei: bigint) => {
+    const ether = Number(wei) / 10**18; // 1 ether = 10^18 wei
+    const formattedEther = ether.toFixed(4); // Format to 4 decimal places
+    return parseFloat(formattedEther);
+  }
 
   return (
     <div className="flex flex-col items-center w-72">
@@ -45,7 +50,7 @@ const Card = (props: Project) => {
         <div className="text-black text-xs font-semibold mt-4">{props.title}</div>
         <div className="mt-7 flex flex-row justify-between">
           <div className="text-stone-300 text-xs font-medium">Raised of</div>
-          <div className="ml-2 text-black text-xs font-medium">{props.raised.toString()}</div>
+          <div className="ml-2 text-black text-xs font-medium">{weiToEth(props.raised)}</div>
           <div className="ml-auto text-black text-xs font-medium">{convertTimestampToDate(props.createAt)}</div>
         </div>
         <div className="mt-2 w-full bg-white rounded-full h-1 border border-cyan-700 dark:bg-gray-700">
