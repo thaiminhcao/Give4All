@@ -7,11 +7,10 @@ import { useContractSend } from '@/lib/contract/useContractWrite';
 export default function DonationForm() {
     const [comment, setComment] = useState("");
     const [loading, setLoading] = useState("");
-    const [payableAmount, setpayableAmount] = useState("");
     const { push } = useRouter();
     const router = useRouter();
     const { id } = router.query;
-    const { data: projectTax }: any = useContractCall("projectTax");
+    const [projectTax, setProjectTax] = useState<string | number>(0);
     const clearForm = () => {
         setComment("");
     };
@@ -20,15 +19,15 @@ export default function DonationForm() {
             toast.warn("Please enter valid comment (more than 10 characters & not only whitespace")
             return false;
         }
+        return true
     }
     const { writeAsync: createProject } = useContractSend("donation", projectTax, [
         id,
         comment,
-        payableAmount
     ]);
 
     const handleCreateProject = async () => {
-        setLoading("Creating...");
+        setLoading("Donating...");
         if (!isComplete()) throw new Error("Please fill all fields");
         if (!createProject) {
             throw "Failed to deny";
@@ -63,7 +62,7 @@ export default function DonationForm() {
     }
     return (
         <div className="relative z-50  bg-white rounded-lg justify-items-center ">
-            <form action="" className="  p-8">
+            <form onSubmit={addProject} className="  p-8">
                 <div className="grid space-y-2 w-96 h-full bg-white bg-opacity-30">
                     <h1 className="text-black text-4xl font-bold text-center">DONATION FORM</h1>
                     <div className="w-96 h-px border border-black"></div>
@@ -89,19 +88,20 @@ export default function DonationForm() {
                         />
                     </div>
 
-                    {/* <div className="mx-auto w-full pt-4">
+                    <div className="mx-auto w-full pt-4">
                         <label htmlFor="email" className="text-black text-2xl font-medium">
                             Donation
                         </label>
                         <Input
+                            value={projectTax}
                             onChange={(e) => {
-                                setpayableAmount(e.target.value);
+                                setProjectTax(e.target.value);
                             }}
                             placeholder="1 ETH"
                             inputClassName="spin-button-hidden"
                             className="w-96 h-12 bg-neutral-100 rounded py-2"
                         />
-                    </div> */}
+                    </div>
 
                     <div className="mx-auto w-full pt-4">
                         <label htmlFor="moreInfo" className="text-black text-2xl font-medium">
@@ -119,6 +119,7 @@ export default function DonationForm() {
                             Comment
                         </label>
                         <Input
+                            value={comment}
                             onChange={(e) => {
                                 setComment(e.target.value);
                             }}
@@ -130,9 +131,10 @@ export default function DonationForm() {
 
                     <div className="p-6 flex gap-10 xs:mt-8 justify-center w-full">
                         <button type="submit"
+                            onSubmit={addProject}
                             className="rounded-lg w-full text-white p-1 px-10 bg-yellow-500 text-xl font-bold hover:bg-yellow-400"
                             disabled={!!loading || !isComplete}
-                        >{loading ? loading : "Process to pay"}
+                        >{loading ? loading : "Donate"}
                         </button>
                     </div>
 

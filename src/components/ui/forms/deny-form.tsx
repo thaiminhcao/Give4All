@@ -11,7 +11,7 @@ function DenyForm() {
     const { push } = useRouter();
     const router = useRouter();
     const { id } = router.query;
-    const { data: projectTax }: any = useContractCall("projectTax");
+    const projectTax: (number | string) = 0.01;
     const [loading, setLoading] = useState("");
     const clearForm = () => {
         setComment("");
@@ -21,6 +21,7 @@ function DenyForm() {
             toast.warn("Please enter valid comment (more than 10 characters & not only whitespace")
             return false;
         }
+        return true
     }
     const { writeAsync: createProject } = useContractSend("deny", projectTax, [
         id,
@@ -63,7 +64,7 @@ function DenyForm() {
     };
     return (
         <div className="relative z-50  bg-white rounded-lg justify-items-center ">
-            <form action="" className=" p-8" onSubmit={addProject}>
+            <form className=" p-8" onSubmit={addProject}>
                 <div className="grid space-y-2 w-96 h-full bg-white bg-opacity-30">
                     <h1 className="text-black text-4xl font-bold text-center">DENY FORM</h1>
                     <div className="w-96 h-px border border-black"></div>
@@ -77,7 +78,6 @@ function DenyForm() {
                             placeholder="Enter your name"
                         />
                     </div>
-
 
                     <div className="mx-auto w-full pt-4">
                         <label htmlFor="email" className="text-black text-2xl font-medium">

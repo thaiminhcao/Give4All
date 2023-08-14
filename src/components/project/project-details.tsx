@@ -14,7 +14,6 @@ export default function ProjectDetails() {
   const getProject = useContractCalls(["getProject", "getRates", "getDonations", "getDenials"], [Number(id)]) ?? [];
 
   // Cancel render UI when projects do not exist or have error occurred.
-  console.log(getProject);
   if (!getProject
     || !getProject[0].data
     || !getProject[1].data
