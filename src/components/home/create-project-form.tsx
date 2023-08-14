@@ -92,7 +92,6 @@ export default function CreateProjectForm() {
     (Date.parse(expiresAt.startDate.toString())) / 1000, // convert to time stamp
     tag
   ]);
-
   // Define function that handles the creation of a project through the contract
   const handleCreateProject = async () => {
     setLoading("Creating...");

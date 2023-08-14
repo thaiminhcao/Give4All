@@ -2,7 +2,6 @@ import { Star } from '@/components/icons/star-icon';
 import { useModal } from '@/components/modal-views/context';
 import { useContractCalls } from '@/lib/contract/useContractReads';
 import { Project, GetRates, Donations } from '@/types';
-import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -12,10 +11,23 @@ export default function ProjectDetails() {
   //get id from params
   const router = useRouter();
   const { id } = router.query;
-  const getProject = useContractCalls(["getProject", "getRates", "getDonations"], [Number(id)]);
+  const getProject = useContractCalls(["getProject", "getRates", "getDonations", "getDenials"], [Number(id)]) ?? [];
 
-  // cancle render ui when project does not exist
-  if (!getProject[0].data || getProject[1].data[0].status === "failure") {
+  // Cancel render UI when projects do not exist or have error occurred.
+  if (!getProject
+    || !getProject[0].data
+    || !getProject[1].data
+    || !getProject[2].data
+    || !getProject[3].data
+    || !getProject[0].data[0].result
+    || !getProject[1].data[0].result
+    || !getProject[2].data[0].result
+    || !getProject[3].data[0].result
+    || getProject[0].error
+    || getProject[1].error
+    || getProject[2].error
+    || getProject[3].error
+  ) {
     return;
   }
   const project = getProject[0].data[0].result as Project;
@@ -33,15 +45,17 @@ export default function ProjectDetails() {
   const sortedData = [...rates].sort((a, b) => b.score - a.score);
   const top5Users = sortedData.slice(0, 5).map(item => item.user);
 
-  console.log(getProject[2].data)
   // get number of supporters
   const supporters = getProject[2].data[0].result.length;
+
+  //get denials
+  const denials = getProject[3].length ?? 0;
   return (
     <>
       <div className="text-black text-4xl font-semibold mb-4 ">
         Project Details
       </div>
-      <div className="pt-8 grid justify-items-start w-full">
+      <div className="pt-8 flex-nowrap justify-items-start w-full">
         <div className="flex flex-nowrap ">
 
           <div className="w-3/5 h-auto rounded-lg mr-4">
@@ -71,7 +85,7 @@ export default function ProjectDetails() {
 
               </div>
               <div className="w-36 h-32 bg-cyan-100 rounded ">
-                <h1 className='text-center text-black text-3xl font-normal  justify-center mt-8'>45</h1>
+                <h1 className='text-center text-black text-3xl font-normal  justify-center mt-8'>{denials}</h1>
                 <h1 className='text-center text-black text-sm font-normal  justify-center'>Opponents</h1>
 
               </div>
@@ -142,7 +156,7 @@ export default function ProjectDetails() {
 
         </div>
       </div>
-      <div className="pt-8 grid justify-items-start w-full mt-10">
+      <div className="pt-8 flex-nowrap justify-items-start w-full mt-10">
         <div className="flex flex-nowrap ">
           <h1 className="w-auto text-black text-3xl font-semibold">Best Project In 2023</h1>
         </div>
@@ -192,7 +206,7 @@ export default function ProjectDetails() {
 
                 <div className='bg-gray-100 rounded-lg p-3 mb-2'>
                   <h1 className='text-black text-base font-semibold text-left'>Tail Black</h1>
-                  <p className='text-gray-700 text-sm'>Comment something</p>
+                  <p className='text-gray-700 text-sm'>Comment somethinggggggg</p>
                 </div>
               </div>
             </div>
