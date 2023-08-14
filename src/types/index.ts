@@ -32,3 +32,14 @@ export interface Project {
   status: number;
   tags: string[];
 }
+export interface GetRates {
+  user: string;
+  donationTime: number;
+  score: number;
+}
+
+export interface Donations {
+  donor: string;
+  donationTime: bigint;
+  value: number;
+}
