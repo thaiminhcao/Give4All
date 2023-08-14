@@ -206,7 +206,7 @@ export default function ProjectDetails() {
 
                 <div className='bg-gray-100 rounded-lg p-3 mb-2'>
                   <h1 className='text-black text-base font-semibold text-left'>Tail Black</h1>
-                  <p className='text-gray-700 text-sm'>Comment something</p>
+                  <p className='text-gray-700 text-sm'>Comment somethinggggggg</p>
                 </div>
               </div>
             </div>
