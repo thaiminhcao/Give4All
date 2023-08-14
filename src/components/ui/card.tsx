@@ -1,9 +1,21 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Project } from "@/types";
 
 const Card = (props: Project) => {
-  const percentRaised = Number(props.balanceOf / props.raised) * 100;
+  const percentRaised = Number(props.balanceOf) / Number(props.raised) * 100;
   const displayPercenRaised = (percentRaised <= 100 ? percentRaised : 100) + "%";
+  
+  const [hasCategory, setHasCategory] = useState(false);
+  const [project, setProject] = useState<Project>(props);
+
+  useEffect(() => {
+    setProject(props);
+ 
+    if (project.tags[0]) {
+      setHasCategory(true)
+    }
+  }, [])
 
   const shortenAddress = (address: string) => {
     return address.slice(0, 6) + "..." + address.slice(-4);
@@ -27,14 +39,14 @@ const Card = (props: Project) => {
   return (
     <div className="flex flex-col items-center w-72">
       <Image className="w-72 h-52 rounded-tl-lg rounded-tr-lg border border-b-0 border-cyan-700" 
-        src={props.imageURL} 
+        src={project.imageURL} 
         width={325} 
         height={213} 
-        alt={props.title}
+        alt={project.title}
       />
       <div className="w-72 bg-white rounded-bl-lg rounded-br-lg border border-t-0 border-cyan-700 p-3">
-        {props.tags[0] ? (
-          <div className="w-fit mb-4 text-center text-white text-base font-semibold bg-cyan-700 rounded px-3">{props.tags[0]}</div>
+        {hasCategory ? (
+          <div className="w-fit mb-4 text-center text-white text-base font-semibold bg-cyan-700 rounded px-3">{project.tags[0]}</div>
         ) : (
           <div className="w-fit mb-4 text-center text-white text-base font-semibold rounded px-3">_</div>
         )}
@@ -43,15 +55,15 @@ const Card = (props: Project) => {
             src="https://randomuser.me/api/portraits/men/48.jpg" 
             width={25} 
             height={25} 
-            alt={props.owner}
+            alt={project.owner}
           />
-          <div className="ml-4 text-zinc-500 text-xs font-semibold">{shortenAddress(props.owner)}</div>
+          <div className="ml-4 text-zinc-500 text-xs font-semibold">{shortenAddress(project.owner)}</div>
         </div>
-        <div className="text-black text-xs font-semibold mt-4">{props.title}</div>
+        <div className="text-black text-xs font-semibold mt-4">{project.title}</div>
         <div className="mt-7 flex flex-row justify-between">
           <div className="text-stone-300 text-xs font-medium">Raised of</div>
-          <div className="ml-2 text-black text-xs font-medium">{weiToEth(props.raised)}</div>
-          <div className="ml-auto text-black text-xs font-medium">{convertTimestampToDate(props.createAt)}</div>
+          <div className="ml-2 text-black text-xs font-medium">{weiToEth(project.raised)}</div>
+          <div className="ml-auto text-black text-xs font-medium">{convertTimestampToDate(project.createAt)}</div>
         </div>
         <div className="mt-2 w-full bg-white rounded-full h-1 border border-cyan-700 dark:bg-gray-700">
           <div className="bg-cyan-700 h-full rounded-full" style={{width: displayPercenRaised}}></div>
