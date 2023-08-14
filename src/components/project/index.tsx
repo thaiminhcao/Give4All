@@ -32,7 +32,7 @@ export default function ExploreOurProjects() {
         <p className="mt-7 text-center text-xl font-normal text-zinc-500">
           Discover the Beauty of Charitable Endeavors
         </p>
-        {projectList.length > 0 ? (
+        {projectList?.length > 0 ? (
           <Slider options={{ align: 'center' }}>
             {projectList.map((project, i) => (
               <div key={i} className="flex-[0_0_90%] pl-1 md:flex-[0_0_30%]">
