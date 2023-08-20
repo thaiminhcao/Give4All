@@ -28,20 +28,52 @@ type SearchFromProps = {
 
 const tags = [
   {
-    label: 'bitcoin',
+    label: 'illustration',
     link: '#',
   },
   {
-    label: 'ethereum',
+    label: '3d',
     link: '#',
   },
   {
-    label: 'donation',
+    label: 'animation',
+    link: '#',
+  },
+  {
+    label: 'digital',
+    link: '#',
+  },
+  {
+    label: 'fanart',
+    link: '#',
+  },
+  {
+    label: 'concept',
+    link: '#',
+  },
+  {
+    label: 'sports',
+    link: '#',
+  },
+  {
+    label: 'fantasy',
+    link: '#',
+  },
+  {
+    label: 'abstract',
+    link: '#',
+  },
+  {
+    label: 'colorful',
+    link: '#',
+  },
+  {
+    label: 'modern',
     link: '#',
   },
 ];
 
-export function SearchFrom({ placeholder = 'Search project...' }: SearchFromProps) {
+export function SearchFrom({ placeholder = 'Search...' }: SearchFromProps) {
   const { closeModal } = useModal();
   let [showSuggestion, setShowSuggestion] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

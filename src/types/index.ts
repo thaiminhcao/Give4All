@@ -38,6 +38,16 @@ export interface GetRates {
   score: number;
 }
 
+export interface ProjectGridProps {
+  id: number;
+  owner: string;
+  title: string;
+  description: string;
+  raised: bigint;
+  image: string;
+  expiresAt:number;
+};
+
 export interface Donations {
   donor: string;
   donationTime: bigint;

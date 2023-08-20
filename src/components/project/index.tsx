@@ -1,5 +1,4 @@
-import Slider from '@/components/ui/slider';
-import Card from '../ui/card';
+import ExploreData from '@/components/home/explore-data'
 import { Project } from '@/types';
 import { useContractCall } from '@/lib/contract/useContractRead';
 import { useAccount } from 'wagmi';
@@ -14,7 +13,7 @@ export default function ExploreOurProjects() {
     return (
       <>
         <h2 className="text-center text-6xl font-bold text-cyan-700">
-          Your Projects
+          My Projects
         </h2>
         <p className="mt-7 text-center text-xl font-normal text-zinc-500">
           Please connect your wallet to view projects
@@ -27,19 +26,13 @@ export default function ExploreOurProjects() {
     <>
       <div className="mx-auto w-full max-w-5xl p-5 pt-4 xs:p-6 xs:pt-5">
         <h2 className="text-center text-6xl font-bold text-cyan-700">
-          Your Projects
+          My Projects
         </h2>
         <p className="mt-7 text-center text-xl font-normal text-zinc-500">
           Discover the Beauty of Charitable Endeavors
         </p>
         {projectList?.length > 0 ? (
-          <Slider options={{ align: 'center' }}>
-            {projectList.map((project, i) => (
-              <div key={i} className="flex-[0_0_90%] pl-1 md:flex-[0_0_30%]">
-                <Card {...project} />
-              </div>
-            ))}
-          </Slider>
+          <ExploreData projectList={projectList ? projectList : []}/>
         ) : (
           <div className="flex justify-center">
             <ActiveLink href="/create-project">

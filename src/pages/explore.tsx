@@ -1,7 +1,7 @@
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import type { NextPageWithLayout } from '@/types';
 import RootLayout from '@/layouts/_root-layout';
-import ExploreOurProjects from '@/components/home/explore-our-projects';
+import Explore from '@/components/home/explore';
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
@@ -12,7 +12,7 @@ export const getStaticProps: GetStaticProps = async () => {
 const ExplorePage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = () => {
-  return <ExploreOurProjects />;
+  return <Explore />;
 };
 
 ExplorePage.getLayout = function getLayout(page) {

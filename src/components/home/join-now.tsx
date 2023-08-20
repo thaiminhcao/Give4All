@@ -18,7 +18,7 @@ export default function JoinNow() {
                     <p className="py-8 text-gray-500 text-lg">Users contribute funds to charitable causes.</p>
                   </div>
                   <div className="w-4/12">
-                    <ActiveLink href="/explore-our-projects">
+                    <ActiveLink href="/explore">
                       <button className="rounded-full text-cyan-700 py-2 border-cyan-700 border-2 hover:bg-cyan-700 hover:text-white">
                         <LongArrowUp
                           className="h-12 w-16 rotate-90"
