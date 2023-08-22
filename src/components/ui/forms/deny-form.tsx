@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { useContractSend } from '@/lib/contract/useContractWrite';
-import { useContractCall } from '@/lib/contract/useContractRead';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import Input from './input';
@@ -11,7 +10,6 @@ function DenyForm() {
     const { push } = useRouter();
     const router = useRouter();
     const { id } = router.query;
-    const projectTax: (number | string) = 0.01;
     const [loading, setLoading] = useState("");
     const clearForm = () => {
         setComment("");
@@ -23,7 +21,7 @@ function DenyForm() {
         }
         return true
     }
-    const { writeAsync: createProject } = useContractSend("deny", projectTax, [
+    const { writeAsync: createProject } = useContractSend("deny", [
         id,
         comment
     ]);

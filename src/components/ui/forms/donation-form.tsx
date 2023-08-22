@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Input from '@/components/ui/forms/input';
 import { toast } from 'react-toastify';
-import { useContractCall } from '@/lib/contract/useContractRead';
 import { useRouter } from 'next/router';
 import { useContractSend } from '@/lib/contract/useContractWrite';
 export default function DonationForm() {
@@ -10,7 +9,6 @@ export default function DonationForm() {
     const { push } = useRouter();
     const router = useRouter();
     const { id } = router.query;
-    const [projectTax, setProjectTax] = useState<string | number>(0);
     const clearForm = () => {
         setComment("");
     };
@@ -21,7 +19,7 @@ export default function DonationForm() {
         }
         return true
     }
-    const { writeAsync: createProject } = useContractSend("donation", projectTax, [
+    const { writeAsync: createProject } = useContractSend("donation", [
         id,
         comment,
     ]);
@@ -92,15 +90,6 @@ export default function DonationForm() {
                         <label htmlFor="email" className="text-black text-2xl font-medium">
                             Donation
                         </label>
-                        <Input
-                            value={projectTax}
-                            onChange={(e) => {
-                                setProjectTax(e.target.value);
-                            }}
-                            placeholder="1 ETH"
-                            inputClassName="spin-button-hidden"
-                            className="w-96 h-12 bg-neutral-100 rounded py-2"
-                        />
                     </div>
 
                     <div className="mx-auto w-full pt-4">

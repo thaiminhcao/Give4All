@@ -8,6 +8,7 @@ import { SortList } from '@/components/search/filters';
 
 export default function Explore() {
   const projectList: Project[] = useContractCall("getProjects").data as Project[];
+  console.log(projectList)
   const projectCount: number = useContractCall("projectCount").data as number;
   const { openDrawer } = useDrawer();
   return (
