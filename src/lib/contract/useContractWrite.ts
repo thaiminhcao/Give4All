@@ -4,10 +4,9 @@ import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import contractInstance from "../../config/abi/Give4All.json";
 
 // write to a smart contract
-export const useContractSend = (functionName: string, projectTax: any = 0, args: Array<any> ) => {
+export const useContractSend = (functionName: string, args: Array<any> ) => {
     // Prepare the write to the smart contract
     const { config } = usePrepareContractWrite({
-        value: projectTax, // WEI
         // The address of the smart contract, in this case the Give4All from the JSON file
         address: contractInstance.address as `0x${string}`,
         // The ABI of the smart contract, in this case the Give4All from the JSON file
@@ -16,8 +15,6 @@ export const useContractSend = (functionName: string, projectTax: any = 0, args:
         functionName,
         // The arguments to pass to the smart contract function
         args,
-        // The gas limit to use when sending a transaction
-        gas: BigInt(1000000),
         onError: (err) => {
             console.log({ err })
         }

@@ -16,21 +16,20 @@ export default function CreateProjectForm() {
   // The following states are used to store the values of the input fields
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [imageURL, setImageURL] = useState("");
+  const [imageURL, setImageURL] = useState(""); // save in server
   const [raised, setRaised] = useState<string | number>(0);
   const [expiresAt, setExpiresAt] = useState({
     startDate: (new Date((new Date()).getTime() + (24 * 60 * 60 * 1000))),
     endDate: null
   });
-  const [tag, setTag] = useState<string[]>([]); // optional
+  const [amountTokenDeposit, setAmountTokenDeposit] = useState(0);
+  const [tag, setTag] = useState<string[]>([]); // optional save in server
 
   const handleDateChange = (newValue: any) => {
     setExpiresAt(newValue);
   }
   const [loading, setLoading] = useState("");
 
-  // call get project Tax
-  const { data: projectTax }: any = useContractCall("projectTax");
   // Clear the input fields after the project is added
   const clearForm = () => {
     setTitle("");
@@ -42,6 +41,7 @@ export default function CreateProjectForm() {
       endDate: null
     });
     setTag([]);
+    setAmountTokenDeposit(0)
   };
 
   // Validate a url
@@ -84,13 +84,12 @@ export default function CreateProjectForm() {
   }
 
   // Use the useContractSend hook to use our createProject function
-  const { writeAsync: createProject } = useContractSend("createProject", projectTax, [
+  const { writeAsync: createProject } = useContractSend("createProject", [
     title,
     description,
-    imageURL,
     raised,
     (Date.parse(expiresAt.startDate.toString())) / 1000, // convert to time stamp
-    tag
+    amountTokenDeposit
   ]);
   // Define function that handles the creation of a project through the contract
   const handleCreateProject = async () => {
@@ -228,13 +227,28 @@ export default function CreateProjectForm() {
               Tags
             </h2>
             <p className="relative text-gray-500 mb-2">
-              Categorizing projects into relevant fields
+              Categorizing projects into relevant fields (Optional)
             </p>
             <Input
               onChange={(e) => {
                 setTag([e.target.value]);
               }}
               placeholder="Tag"
+              inputClassName="spin-button-hidden"
+            />
+          </div>
+          <div className="mx-auto w-full pt-4">
+            <h2 className="font-bold lg:text-2xl text-xl">
+              AmountTokenDeposit
+            </h2>
+            <p className="relative text-gray-500 mb-2">
+              Amount token deposit (Default is 0)
+            </p>
+            <Input
+              onChange={(e) => {
+                setAmountTokenDeposit(Number(e.target.value));
+              }}
+              placeholder="0"
               inputClassName="spin-button-hidden"
             />
           </div>
