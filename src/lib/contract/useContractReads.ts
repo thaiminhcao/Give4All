@@ -3,7 +3,7 @@ import mainContract from "../../config/abi/Give4All.json";
 import projectContract from "../../config/abi/project.json";
 
 export const useContractCalls = (functionName: string[] , contractAddress:string = mainContract.address, abi: string = "main",
-    args?: Array<any>) => {
+    args?: Array<any>, watch?: boolean, from? : `0x${string}` | undefined) => {
 
     let result: any[] = [];
     let abiJson: Array<any> = mainContract.abi
@@ -18,6 +18,7 @@ export const useContractCalls = (functionName: string[] , contractAddress:string
                 functionName: functionName[i],
                 args,
             }],
+            watch,
             onError(error) {
                 console.log('Error', error)
             },

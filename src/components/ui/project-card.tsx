@@ -2,7 +2,6 @@ import AnchorLink from '@/components/ui/links/anchor-link';
 import { Verified } from '@/components/icons/verified';
 import { ProjectGridProps } from "@/types";
 import { useContractCalls } from '@/lib/contract/useContractReads';
-import { useContractCall } from '@/lib/contract/useContractRead';
 
 export default function ProjectCard({
   address
@@ -16,7 +15,7 @@ export default function ProjectCard({
     || !Project[0].data[0].result
     || Project[0].error
   ) {
-    return;
+    return
   }
 
   const title = Project[0].data[0].result;
@@ -36,7 +35,7 @@ export default function ProjectCard({
           <span className="overflow-hidden text-ellipsis">@{address}</span>
         </AnchorLink>
       </div>
-      <AnchorLink href={"/project-details?id=" + address} className="relative block w-full">
+      <AnchorLink href={"/project-details?address=" + address} className="relative block w-full">
         <img src={imageURL}/>
       </AnchorLink>
 
