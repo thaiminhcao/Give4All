@@ -1,16 +1,29 @@
 import AnchorLink from '@/components/ui/links/anchor-link';
 import { Verified } from '@/components/icons/verified';
 import { ProjectGridProps } from "@/types";
+import { useContractCalls } from '@/lib/contract/useContractReads';
+import { useContractCall } from '@/lib/contract/useContractRead';
 
 export default function ProjectCard({
-  id,
-  owner,
-  image,
-  title,
-  description,
-  raised,
-  expiresAt
+  address
 }: ProjectGridProps) {
+
+  const Project = useContractCalls(["title", "description", "imageURL", "raised", "expiresAt", "status"], address, "project")
+
+  // Cancel render UI when projects do not exist or have error occurred.
+  if (!Project
+    || !Project[0].data
+    || !Project[0].data[0].result
+    || Project[0].error
+  ) {
+    return;
+  }
+
+  const title = Project[0].data[0].result;
+  const description = Project[1].data[0].result;
+  const imageURL = Project[2].data[0].result;
+  const raised = Project[3].data[0].result;
+  const expiresAt = Project[4].data[0].result;
   const date = new Date(Number(expiresAt)* 1000)
   const expireDate = date.getDate() + '/' +  date.getMonth() + '/' + date.getFullYear()
   return (
@@ -20,11 +33,11 @@ export default function ProjectCard({
           href="/"
           className="flex items-center text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
         >
-          <span className="overflow-hidden text-ellipsis">@{owner}</span>
+          <span className="overflow-hidden text-ellipsis">@{address}</span>
         </AnchorLink>
       </div>
-      <AnchorLink href={"/project-details?id=" + id} className="relative block w-full">
-        <img src={image}/>
+      <AnchorLink href={"/project-details?id=" + address} className="relative block w-full">
+        <img src={imageURL}/>
       </AnchorLink>
 
       <div className="p-5">
@@ -47,7 +60,7 @@ export default function ProjectCard({
           Expire at:{expireDate}
         </div>
         <div className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
-          Raised: {Number(raised)}ETH
+          Raised: {Number(raised)} ETH
         </div>
       </div>
     </div>

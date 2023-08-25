@@ -39,13 +39,7 @@ export interface GetRates {
 }
 
 export interface ProjectGridProps {
-  id: number;
-  owner: string;
-  title: string;
-  description: string;
-  raised: bigint;
-  image: string;
-  expiresAt:number;
+  address: string;
 };
 
 export interface Donations {

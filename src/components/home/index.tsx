@@ -21,7 +21,9 @@ export default function Home() {
             <ActiveLink  href="/join-now">
               <button className="rounded-lg text-white p-1 px-10 bg-yellow-500 text-xl font-bold">Join Now</button>
             </ActiveLink>
-            <button className="rounded-lg text-cyan-700 p-1 px-8 border-cyan-700 border-2 text-xl font-bold">Learn More</button>
+            <ActiveLink  href="/explore">
+              <button className="rounded-lg text-cyan-700 p-1 px-8 border-cyan-700 border-2 text-xl font-bold">Explore</button>
+            </ActiveLink>
           </div>
         </div>
       </div>

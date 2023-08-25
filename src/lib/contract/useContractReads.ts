@@ -1,13 +1,20 @@
 import { useContractReads } from 'wagmi';
-import contractInstance from "../../config/abi/Give4All.json";
+import mainContract from "../../config/abi/Give4All.json";
+import projectContract from "../../config/abi/project.json";
 
-export const useContractCalls = (functionName: string[], args?: Array<any>) => {
+export const useContractCalls = (functionName: string[] , contractAddress:string = mainContract.address, abi: string = "main",
+    args?: Array<any>) => {
+
     let result: any[] = [];
+    let abiJson: Array<any> = mainContract.abi
+    if (abi == "project") 
+        abiJson = projectContract.abi
+
     for (let i = 0; i < functionName.length; i++) {
         const resp = useContractReads({
             contracts: [{
-                address: contractInstance.address as `0x${string}`,
-                abi: contractInstance.abi as any,
+                address: contractAddress as `0x${string}`,
+                abi: abiJson,
                 functionName: functionName[i],
                 args,
             }],

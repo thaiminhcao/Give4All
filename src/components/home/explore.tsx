@@ -7,10 +7,10 @@ import { OptionIcon } from '@/components/icons/option';
 import { SortList } from '@/components/search/filters';
 
 export default function Explore() {
-  const projectList: Project[] = useContractCall("getProjects").data as Project[];
-  console.log(projectList)
+  const projectList: [] = useContractCall("getProjects").data as [];
   const projectCount: number = useContractCall("projectCount").data as number;
   const { openDrawer } = useDrawer();
+
   return (
     <>
         <div className="mx-auto w-full max-w-6xl">

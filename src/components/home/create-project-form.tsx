@@ -4,7 +4,6 @@ import Input from '@/components/ui/forms/input';
 import { LongArrowUp } from '@/components/icons/long-arrow-up';
 import Textarea from '@/components/ui/forms/textarea';
 import { useContractSend } from '@/lib/contract/useContractWrite';
-import { useContractCall } from "@/lib/contract/useContractRead";
 // Import the toast library to display notifications
 import { toast } from "react-toastify";
 import Datepicker from "react-tailwindcss-datepicker";
@@ -87,6 +86,7 @@ export default function CreateProjectForm() {
   const { writeAsync: createProject } = useContractSend("createProject", [
     title,
     description,
+    imageURL,
     raised,
     (Date.parse(expiresAt.startDate.toString())) / 1000, // convert to time stamp
     amountTokenDeposit

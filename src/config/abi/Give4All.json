@@ -1,5 +1,5 @@
 {
-    "address": "0x3942ba2a6c9a37409e00567dcc7630f90612efb9",
+    "address": "0x488bbb7285c1782a720faae0e00a215f2294a871",
     "abi": [
       {
         "inputs": [],
@@ -81,6 +81,11 @@
           {
             "internalType": "string",
             "name": "_description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_imageURL",
             "type": "string"
           },
           {
