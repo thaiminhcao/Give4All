@@ -6,7 +6,7 @@ import ActiveLink from '../ui/links/active-link';
 
 export default function ExploreOurProjects() {
   const { address, isConnected } = useAccount();
-  let projectList: Project[] = useContractCall('getProjects').data as Project[];
+  let projectList: [] = useContractCall('getProjects').data as [];
   projectList = projectList?.filter((project) => project.owner === address);
 
   if (!isConnected) {
