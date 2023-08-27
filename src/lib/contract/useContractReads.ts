@@ -18,7 +18,7 @@ export const useContractCalls = (functionName: string[] , contractAddress:string
                 functionName: functionName[i],
                 args,
             }],
-            watch,
+            watch: true,
             onError(error) {
                 console.log('Error', error)
             },

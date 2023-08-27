@@ -20,7 +20,7 @@ export const useContractCall = (functionName: string, contractAddress:string = m
         // The arguments to pass to the smart contract function
         args,
         // A boolean to watch for changes in the smart contract. If true, the hook will re-run when the smart contract changes
-        watch,
+        watch: true,
         onError: (err) => {
             console.log({ err })
         }
