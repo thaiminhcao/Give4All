@@ -7,15 +7,12 @@ const ThankYouPage: NextPageWithLayout = () => {
   return (
     <>
       <div className="flex max-w-full flex-col items-center justify-center text-center">
-        <Image
-            src={ThankYouBanner}
-            alt="Banner image"
-            />
-        <h2 className="mt-5 mb-2 text-base font-medium uppercase tracking-wide text-gray-900 dark:text-white sm:mt-10 sm:mb-4 sm:text-xl 3xl:mt-12 3xl:text-2xl">
-            Thank You
+        <Image src={ThankYouBanner} alt="Banner image" />
+        <h2 className="mb-2 mt-5 text-base font-medium uppercase tracking-wide text-gray-900 dark:text-white sm:mb-4 sm:mt-10 sm:text-xl 3xl:mt-12 3xl:text-2xl">
+          Thank You
         </h2>
         <p className="mb-4 max-w-full text-xs leading-loose tracking-tight text-gray-600 dark:text-gray-400 sm:mb-6 sm:w-[430px] sm:text-sm sm:leading-loose">
-            Your project is successfully published
+          Your project is successfully published
         </p>
       </div>
     </>
@@ -23,11 +20,7 @@ const ThankYouPage: NextPageWithLayout = () => {
 };
 
 ThankYouPage.getLayout = function getLayout(page) {
-  return (
-    <RootLayout contentClassName="flex items-center justify-center">
-      {page}
-    </RootLayout>
-  );
+  return <RootLayout>{page}</RootLayout>;
 };
 
 export default ThankYouPage;

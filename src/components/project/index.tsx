@@ -1,4 +1,4 @@
-import ExploreData from '@/components/home/explore-data'
+import ExploreData from '@/components/home/explore-data';
 import { Project } from '@/types';
 import { useContractCall } from '@/lib/contract/useContractRead';
 import { useAccount } from 'wagmi';
@@ -6,7 +6,7 @@ import ActiveLink from '../ui/links/active-link';
 
 export default function ExploreOurProjects() {
   const { address, isConnected } = useAccount();
-  let projectList: [] = useContractCall('getProjects').data as [];
+  let projectList = useContractCall('getProjects').data as Project[];
   projectList = projectList?.filter((project) => project.owner === address);
 
   if (!isConnected) {
@@ -32,7 +32,7 @@ export default function ExploreOurProjects() {
           Discover the Beauty of Charitable Endeavors
         </p>
         {projectList?.length > 0 ? (
-          <ExploreData projectList={projectList ? projectList : []}/>
+          <ExploreData projectList={projectList ? projectList : []} />
         ) : (
           <div className="flex justify-center">
             <ActiveLink href="/create-project">

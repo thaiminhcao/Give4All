@@ -1,54 +1,23 @@
-import type { AppProps } from 'next/app';
+import DrawersContainer from '@/components/drawer-views/container';
+import ModalsContainer from '@/components/modal-views/container';
 import type { NextPageWithLayout } from '@/types';
 import { Fira_Code } from '@next/font/google';
-import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
-import ModalsContainer from '@/components/modal-views/container';
-import DrawersContainer from '@/components/drawer-views/container';
+import Head from 'next/head';
 import 'overlayscrollbars/css/OverlayScrollbars.css';
 // base css file
-import 'swiper/css';
-import '@/assets/css/scrollbar.css';
 import '@/assets/css/globals.css';
 import '@/assets/css/range-slider.css';
+import '@/assets/css/scrollbar.css';
+import 'swiper/css';
 
 // wagmi & rainbow kit
 import '@rainbow-me/rainbowkit/styles.css';
 // Import the ToastContainer component from react-toastify to display notifications.
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from "react-toastify";
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {
-  sepolia
-} from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
-
-const { chains, publicClient } = configureChains(
-  [sepolia],
-  [
-    publicProvider()
-  ]
-);
-
-const { connectors } = getDefaultWallets({
-  appName: 'Give4All',
-  projectId: '74bc34341f14d37fb7c45cb013472515',
-  chains
-});
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient
-})
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
 
 const firaCode = Fira_Code({
   weight: ['400', '500', '700'],
@@ -57,35 +26,87 @@ const firaCode = Fira_Code({
   variable: '--font-body',
 });
 
-function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
-  //could remove this if you don't need to page level layout
+import '@/assets/css/globals.css';
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
+
+import type { AppProps } from 'next/app';
+import { useEffect, useState } from 'react';
+import { WagmiConfig } from 'wagmi';
+import {
+  arbitrum,
+  avalanche,
+  bsc,
+  fantom,
+  gnosis,
+  mainnet,
+  optimism,
+  polygon,
+  sepolia,
+} from 'wagmi/chains';
+
+const chains = [
+  sepolia,
+  mainnet,
+  polygon,
+  avalanche,
+  arbitrum,
+  bsc,
+  optimism,
+  gnosis,
+  fantom,
+];
+
+// 1. Get projectID at https://cloud.walletconnect.com
+
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || '';
+
+const metadata = {
+  name: 'Next Starter Template',
+  description: 'A Next.js starter template with Web3Modal v3 + Wagmi',
+  url: 'https://web3modal.com',
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
+
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
+
+createWeb3Modal({ wagmiConfig, projectId, chains });
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    setReady(true);
+  }, []);
   return (
-      <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains}>
-          <Head>
-            {/* maximum-scale 1 meta tag need to prevent ios input focus auto zooming */}
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1 maximum-scale=1"
-            />
-            <title>Donation</title>
-          </Head>
-          <ThemeProvider
-            attribute="class"
-            enableSystem={false}
-            defaultTheme="light"
-          >
+    <>
+      {ready ? (
+        <WagmiConfig config={wagmiConfig}>
+          <RainbowKitProvider chains={chains}>
+            <Head>
+              {/* maximum-scale 1 meta tag need to prevent ios input focus auto zooming */}
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1 maximum-scale=1"
+              />
+              <title>Donation</title>
+            </Head>
+            <ThemeProvider
+              attribute="class"
+              enableSystem={false}
+              defaultTheme="light"
+            >
               <div className={`${firaCode.variable} font-body`}>
                 <ToastContainer position={'bottom-center'} />
                 {getLayout(<Component {...pageProps} />)}
                 <ModalsContainer />
                 <DrawersContainer />
               </div>
-          </ThemeProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+            </ThemeProvider>
+          </RainbowKitProvider>
+        </WagmiConfig>
+      ) : null}
+    </>
   );
 }
-
-export default CustomApp;

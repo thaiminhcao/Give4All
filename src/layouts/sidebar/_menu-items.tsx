@@ -1,8 +1,8 @@
-import routes from '@/config/routes';
+import { AboutUsIcon } from '@/components/icons/about-us';
+import { CompassIcon } from '@/components/icons/compass';
 import { HomeIcon } from '@/components/icons/home';
 import { ProfileIcon } from '@/components/icons/profile';
-import { CompassIcon } from '@/components/icons/compass';
-
+import routes from '@/config/routes';
 export const menuItems = [
   {
     name: 'Home',
@@ -18,5 +18,10 @@ export const menuItems = [
     name: 'My Project',
     icon: <ProfileIcon />,
     href: routes.project,
+  },
+  {
+    name: 'About Us',
+    icon: <AboutUsIcon />,
+    href: routes.about_us,
   },
 ];

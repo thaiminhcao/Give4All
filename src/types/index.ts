@@ -40,7 +40,7 @@ export interface GetRates {
 
 export interface ProjectGridProps {
   address: string;
-};
+}
 
 export interface Donations {
   donor: string;

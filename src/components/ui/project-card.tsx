@@ -1,30 +1,42 @@
+'use client';
 import AnchorLink from '@/components/ui/links/anchor-link';
 import { Verified } from '@/components/icons/verified';
-import { ProjectGridProps } from "@/types";
+import { ProjectGridProps } from '@/types';
 import { useContractCalls } from '@/lib/contract/useContractReads';
+import { useEffect } from 'react';
 
-export default function ProjectCard({
-  address
-}: ProjectGridProps) {
-
-  const Project = useContractCalls(["title", "description", "imageURL", "raised", "expiresAt", "status"], address, "project")
-
+export default function ProjectCard({ address }: ProjectGridProps) {
+  let title = 0;
+  let description = '';
+  let imageURL = '';
+  let raised = 0;
+  let expiresAt = 0;
+  let date = new Date(Number(expiresAt) * 1000);
+  const Project = useContractCalls(
+    ['title', 'description', 'imageURL', 'raised', 'expiresAt', 'status'],
+    address,
+    'project'
+  );
   // Cancel render UI when projects do not exist or have error occurred.
-  if (!Project
-    || !Project[0].data
-    || !Project[0].data[0].result
-    || Project[0].error
+  if (
+    !Project ||
+    !Project[0] ||
+    !Project[0].data ||
+    !Project[0].data[0].result ||
+    Project[0].error
   ) {
-    return
+    return;
+  } else {
+    title = Project[0].data[0].result;
+    description = Project[1].data[0].result;
+    imageURL = Project[2].data[0].result;
+    raised = Project[3].data[0].result;
+    expiresAt = Project[4].data[0].result;
+    date = new Date(Number(expiresAt) * 1000);
   }
 
-  const title = Project[0].data[0].result;
-  const description = Project[1].data[0].result;
-  const imageURL = Project[2].data[0].result;
-  const raised = Project[3].data[0].result;
-  const expiresAt = Project[4].data[0].result;
-  const date = new Date(Number(expiresAt)* 1000)
-  const expireDate = date.getDate() + '/' +  date.getMonth() + '/' + date.getFullYear()
+  let expireDate =
+    date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
   return (
     <div className="relative overflow-hidden rounded-lg bg-white shadow-card transition-all duration-200 hover:shadow-large dark:bg-light-dark">
       <div className="p-4">
@@ -35,8 +47,11 @@ export default function ProjectCard({
           <span className="overflow-hidden text-ellipsis">@{address}</span>
         </AnchorLink>
       </div>
-      <AnchorLink href={"/project-details?address=" + address} className="relative block w-full">
-        <img src={imageURL}/>
+      <AnchorLink
+        href={'/project-details?address=' + address}
+        className="relative block w-full"
+      >
+        <img src={imageURL} />
       </AnchorLink>
 
       <div className="p-5">
