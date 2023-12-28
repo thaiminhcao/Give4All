@@ -1,4 +1,5 @@
 import { AboutUsIcon } from '@/components/icons/about-us';
+import { AdminIcon } from '@/components/icons/admin';
 import { CompassIcon } from '@/components/icons/compass';
 import { HomeIcon } from '@/components/icons/home';
 import { ProfileIcon } from '@/components/icons/profile';
@@ -19,9 +20,14 @@ export const menuItems = [
     icon: <ProfileIcon />,
     href: routes.project,
   },
+  // {
+  //   name: 'About Us',
+  //   icon: <AboutUsIcon />,
+  //   href: routes.about_us,
+  // },
   {
-    name: 'About Us',
-    icon: <AboutUsIcon />,
-    href: routes.about_us,
+    name: 'answer-questions',
+    icon: <AdminIcon />,
+    href: routes.answer_questions,
   },
 ];

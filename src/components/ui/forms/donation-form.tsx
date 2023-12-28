@@ -3,16 +3,18 @@ import Input from '@/components/ui/forms/input';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useContractSend } from '@/lib/contract/useContractWrite';
+
 export default function DonationForm() {
   const [comment, setComment] = useState('');
+  const [amountToken, setAmount] = useState(0);
   const [loading, setLoading] = useState('');
   const { push } = useRouter();
   const router = useRouter();
-  const { id } = router.query;
-  const [raised, setRaised] = useState<string | number>(0);
+  const project = router.query.address;
+
   const clearForm = () => {
     setComment('');
-    setRaised(0);
+    setAmount(0);
   };
   const isComplete = () => {
     if (comment.trim() == '' || comment.length < 10) {
@@ -23,16 +25,16 @@ export default function DonationForm() {
     }
     return true;
   };
-  const { writeAsync: createProject } = useContractSend('donation', [
-    id,
-    comment,
+  const { writeAsync: createProject } = useContractSend('donate', [
+    project,
+    amountToken,
   ]);
 
   const handleCreateProject = async () => {
     setLoading('Donating...');
     if (!isComplete()) throw new Error('Please fill all fields');
     if (!createProject) {
-      throw 'Failed to deny';
+      throw 'Failed to donate. Please try again.';
     }
     // Create the project by calling the write project function on the contract
     const purchaseTx = await createProject();
@@ -47,8 +49,8 @@ export default function DonationForm() {
     try {
       // Display a notification while the project is being added
       await toast.promise(handleCreateProject(), {
-        pending: 'Creating project...',
-        success: 'project created successfully',
+        pending: 'Doing...',
+        success: 'Donate successfully',
       });
       // redirect to thank you page
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -79,9 +81,9 @@ export default function DonationForm() {
             </p>
             <Input
               onChange={(e) => {
-                setRaised(e.target.value);
+                setAmount(Number(e.target.value));
               }}
-              placeholder="1 ETH"
+              placeholder="1 GFA"
               inputClassName="spin-button-hidden"
             />
           </div>

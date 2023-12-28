@@ -1,7 +1,7 @@
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import type { NextPageWithLayout } from '@/types';
 import RootLayout from '@/layouts/_root-layout';
-import Project from '@/components/project';
+import Project from '@/components/my-project';
 
 export const getStaticProps: GetStaticProps = async () => {
   return {

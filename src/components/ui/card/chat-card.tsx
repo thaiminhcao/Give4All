@@ -15,7 +15,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAccount } from 'wagmi';
-import { useModal } from '../modal-views/context';
+import { useModal } from '../../modal-views/context';
+import CustomButton from '../button/custom-button';
 const ChatCard = ({
   getProjects,
   index,
@@ -31,13 +32,8 @@ const ChatCard = ({
   const { openModal } = useModal();
   const { isConnected } = useAccount();
   const router = useRouter();
-  function charToColor(char: string) {
-    let code = char.charCodeAt(0);
-    let hex = code.toString(16);
-    let color = '#' + hex + Math.floor(Math.random() * 0xffff).toString(16);
-    return color;
-  }
-  const imageUrl = getProjects.imageURL ?? 'https://source.unsplash.com/random';
+
+  const imageUrl = getProjects.imageURL ?? '';
   const title = getProjects.title ?? 'Untitled';
   return (
     <Card className="block justify-start space-y-10" key={index}>
@@ -84,26 +80,24 @@ const ChatCard = ({
           </ExpandMore>
         </CardActions>
         <CardActions>
-          <button
-            className=" h-10 w-36 rounded-lg bg-yellow-500"
-            onClick={() => {
+          <CustomButton
+            title="Donate"
+            handlerClick={() => {
               isConnected
                 ? openModal('DONATION_VIEW')
                 : toast.warn('Please connect wallet');
             }}
-          >
-            Donate
-          </button>
-          <button
-            className="h-10 w-36 rounded-lg border border-solid border-cyan-800 bg-white"
-            onClick={() => {
+            style="yellow"
+          />
+          <CustomButton
+            style="cyan"
+            title="Deny"
+            handlerClick={() => {
               isConnected
                 ? openModal('DENY_VIEW')
                 : toast.warn('Please connect wallet');
             }}
-          >
-            Deny
-          </button>
+          />
         </CardActions>
       </div>
 

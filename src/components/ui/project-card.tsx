@@ -4,6 +4,7 @@ import { Verified } from '@/components/icons/verified';
 import { ProjectGridProps } from '@/types';
 import { useContractCalls } from '@/lib/contract/useContractReads';
 import { useEffect } from 'react';
+import { sortDataByProjectList } from '@/helper';
 
 export default function ProjectCard({ address }: ProjectGridProps) {
   let title = 0;
@@ -12,27 +13,37 @@ export default function ProjectCard({ address }: ProjectGridProps) {
   let raised = 0;
   let expiresAt = 0;
   let date = new Date(Number(expiresAt) * 1000);
-  const Project = useContractCalls(
-    ['title', 'description', 'imageURL', 'raised', 'expiresAt', 'status'],
+  const functionName = [
+    'title',
+    'description',
+    'imageURL',
+    'raised',
+    'expiresAt',
+    'status',
+  ];
+  const functionLen = functionName.length;
+  const abi = 'project';
+  const getProject = useContractCalls({
+    functionName,
+    abi,
     address,
-    'project'
+  });
+  const data = getProject?.map((item) => item.result) ?? [];
+
+  const result = sortDataByProjectList(
+    address ?? [],
+    data as [],
+    functionName.length
   );
   // Cancel render UI when projects do not exist or have error occurred.
-  if (
-    !Project ||
-    !Project[0] ||
-    !Project[0].data ||
-    !Project[0].data[0].result ||
-    Project[0].error
-  ) {
+  if (!getProject) {
     return;
   } else {
-    title = Project[0].data[0].result;
-    description = Project[1].data[0].result;
-    imageURL = Project[2].data[0].result;
-    raised = Project[3].data[0].result;
-    expiresAt = Project[4].data[0].result;
-    date = new Date(Number(expiresAt) * 1000);
+    title = result.get(address)?.title;
+    description = result.get(address)?.description;
+    imageURL = result.get(address)?.imageURL;
+    raised = result.get(address)?.raised;
+    expiresAt = result.get(address)?.expiresAt;
   }
 
   let expireDate =

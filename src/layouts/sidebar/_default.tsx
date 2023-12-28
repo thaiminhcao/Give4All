@@ -41,7 +41,7 @@ export default function Sidebar({ className }: { className?: string }) {
                 name={item.name}
                 href={item.href}
                 icon={item.icon}
-                dropdownItems={item.dropdownItems}
+                // dropdownItems={item.dropdownItems}
               />
             ))}
           </div>

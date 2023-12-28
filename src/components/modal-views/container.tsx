@@ -11,6 +11,7 @@ import { useModal, MODAL_VIEW } from '@/components/modal-views/context';
 const SearchView = dynamic(() => import('@/components/search/view'));
 const DonateView = dynamic(() => import('@/components/ui/forms/donation-form'));
 const DenyView = dynamic(() => import('@/components/ui/forms/deny-form'));
+const BuyTokenView = dynamic(() => import('@/components/ui/forms/bytoken'));
 function renderModalContent(view: MODAL_VIEW | string) {
   switch (view) {
     case 'SEARCH_VIEW':
@@ -19,6 +20,8 @@ function renderModalContent(view: MODAL_VIEW | string) {
       return <DonateView />;
     case 'DENY_VIEW':
       return <DenyView />;
+    case 'BUY_TOKEN_VIEW':
+      return <BuyTokenView />;
     default:
       return null;
   }

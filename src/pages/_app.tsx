@@ -1,23 +1,33 @@
+import '@/assets/css/globals.css';
+import '@/assets/css/range-slider.css';
+import '@/assets/css/scrollbar.css';
 import DrawersContainer from '@/components/drawer-views/container';
 import ModalsContainer from '@/components/modal-views/container';
 import type { NextPageWithLayout } from '@/types';
 import { Fira_Code } from '@next/font/google';
+import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
+import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { ThemeProvider } from 'next-themes';
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import 'overlayscrollbars/css/OverlayScrollbars.css';
-// base css file
-import '@/assets/css/globals.css';
-import '@/assets/css/range-slider.css';
-import '@/assets/css/scrollbar.css';
-import 'swiper/css';
-
-// wagmi & rainbow kit
-import '@rainbow-me/rainbowkit/styles.css';
-// Import the ToastContainer component from react-toastify to display notifications.
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import '@rainbow-me/rainbowkit/styles.css';
+import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'swiper/css';
+import { WagmiConfig, configureChains, createConfig } from 'wagmi';
+import {
+  arbitrum,
+  avalanche,
+  bsc,
+  fantom,
+  gnosis,
+  optimism,
+  polygon,
+  sepolia,
+} from 'wagmi/chains';
+import { publicProvider } from 'wagmi/providers/public';
 
 const firaCode = Fira_Code({
   weight: ['400', '500', '700'],
@@ -26,48 +36,24 @@ const firaCode = Fira_Code({
   variable: '--font-body',
 });
 
-import '@/assets/css/globals.css';
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
-
-import type { AppProps } from 'next/app';
-import { useEffect, useState } from 'react';
-import { WagmiConfig } from 'wagmi';
-import {
-  arbitrum,
-  avalanche,
-  bsc,
-  fantom,
-  gnosis,
-  mainnet,
-  optimism,
-  polygon,
-  sepolia,
-} from 'wagmi/chains';
-
-const chains = [
-  sepolia,
-  mainnet,
-  polygon,
-  avalanche,
-  arbitrum,
-  bsc,
-  optimism,
-  gnosis,
-  fantom,
-];
-
-// 1. Get projectID at https://cloud.walletconnect.com
-
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || '';
 
-const metadata = {
-  name: 'Next Starter Template',
-  description: 'A Next.js starter template with Web3Modal v3 + Wagmi',
-  url: 'https://web3modal.com',
-  icons: ['https://avatars.githubusercontent.com/u/37784886'],
-};
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [sepolia, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom],
+  [publicProvider()]
+);
+const { connectors } = getDefaultWallets({
+  appName: 'Give4all',
+  projectId,
+  chains,
+});
 
-const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors,
+  publicClient,
+  webSocketPublicClient,
+});
 
 createWeb3Modal({ wagmiConfig, projectId, chains });
 type AppPropsWithLayout = AppProps & {
@@ -110,3 +96,4 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     </>
   );
 }
+//0x488bbb7285c1782a720faae0e00a215f2294a871

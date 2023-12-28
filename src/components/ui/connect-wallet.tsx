@@ -1,7 +1,10 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { ConnectButton, WalletButton } from '@rainbow-me/rainbowkit';
+import CustomButton from './button/custom-button';
+
+const currentChain = ['rainbow', 'metamask', 'coinbase'];
 
 export default function ConnectWallet() {
-    return (
+  return (
     <ConnectButton.Custom>
       {({
         account,
@@ -19,14 +22,12 @@ export default function ConnectWallet() {
           ready &&
           account &&
           chain &&
-          (!authenticationStatus ||
-            authenticationStatus === 'authenticated');
-
+          (!authenticationStatus || authenticationStatus === 'authenticated');
         return (
           <div
             {...(!ready && {
               'aria-hidden': true,
-              'style': {
+              style: {
                 opacity: 0,
                 pointerEvents: 'none',
                 userSelect: 'none',
@@ -36,23 +37,28 @@ export default function ConnectWallet() {
             {(() => {
               if (!connected) {
                 return (
-                  <button className='rounded-lg bg-cyan-100 p-2 px-5 text-cyan-900 font-extrabold' onClick={openConnectModal} type="button">
-                    Connect Wallet
-                  </button>
+                  <CustomButton
+                    style="connect"
+                    handlerClick={openConnectModal}
+                    title="Connect Wallet"
+                  />
                 );
               }
 
               if (chain.unsupported) {
                 return (
-                  <button className='rounded-lg bg-red-500 p-2 px-5 text-white font-extrabold' onClick={openChainModal} type="button">
-                    Wrong network
-                  </button>
+                  <CustomButton
+                    style="connect"
+                    handlerClick={openChainModal}
+                    title="Wrong network"
+                  />
                 );
               }
 
               return (
                 <div style={{ display: 'flex', gap: 12 }}>
-                  <button className='rounded-lg bg-cyan-100 p-2 px-5 text-cyan-900 font-extrabold '
+                  {/* <button
+                    className="rounded-lg bg-cyan-100 p-2 px-5 font-extrabold text-cyan-900 "
                     onClick={openChainModal}
                     style={{ display: 'flex', alignItems: 'center' }}
                     type="button"
@@ -78,20 +84,39 @@ export default function ConnectWallet() {
                       </div>
                     )}
                     {chain.name}
-                  </button>
+                    
+                  </button> */}
 
-                  <button className='rounded-lg bg-cyan-100 p-2 px-5 text-cyan-900 font-extrabold' onClick={openAccountModal} type="button">
+                  {/* {currentChain.map((item) => (
+                    <div>
+                      {item}
+                      <WalletButton wallet={item} />
+                    </div>
+                  ))} */}
+
+                  <button
+                    className="mt-1.5 rounded-lg bg-cyan-100 p-2 px-5 font-extrabold text-cyan-900"
+                    onClick={openAccountModal}
+                    type="button"
+                  >
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`
                       : ''}
                   </button>
+                  {/* <CustomButton
+                    style="rounded-lg bg-cyan-100 p-2 px-5 font-extrabold text-cyan-900"
+                    handlerClick={openAccountModal}
+                    title={
+                      account.displayName + ' ' + `(${account.displayBalance})`
+                    }
+                  /> */}
                 </div>
               );
             })()}
           </div>
         );
       }}
-      </ConnectButton.Custom>
-    )
+    </ConnectButton.Custom>
+  );
 }

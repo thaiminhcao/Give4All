@@ -21,28 +21,22 @@ export const useContractCalls = ({
   watch,
 }: props) => {
   let abiJson: Array<any> = mainContract.abi;
+  let contracts = [];
+  let isArray = true;
+  let len = 1;
   if (abi == 'project') {
     abiJson = projectContract.abi;
   }
-  if (!!address) {
-    contractAddress = address;
-  }
-  let contracts = [];
-  let len = 1;
-  let isArray = true;
-  if (typeof contractAddress == 'undefined') {
+  if (typeof address == 'undefined' || typeof address == 'string') {
     isArray = false;
     len = 1;
   } else {
-    len = contractAddress.length;
+    len = address.length;
   }
-  console.log(address);
   for (let i = 0; i < len; i++) {
-    for (let k = 0; k < functionName.length; k++) {
+    for (let k = 0; k < functionName?.length ?? 1; k++) {
       contracts.push({
-        address: (isArray
-          ? contractAddress[i]
-          : contractAddress) as `0x${string}`,
+        address: (isArray ? address[i] : address) as `0x${string}`,
         abi: abiJson,
         functionName: functionName[k],
         args,

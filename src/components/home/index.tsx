@@ -1,4 +1,5 @@
 import ActiveLink from '@/components/ui/links/active-link';
+import CustomButton from '../ui/button/custom-button';
 
 export default function Home() {
   return (
@@ -20,14 +21,10 @@ export default function Home() {
           </p>
           <div className="flex justify-center gap-10 p-6 xs:mt-8">
             <ActiveLink href="/join-now">
-              <button className="rounded-lg bg-yellow-500 p-1 px-10 text-xl font-bold text-white">
-                Join Now
-              </button>
+              <CustomButton style="yellow" title="Join Now" />
             </ActiveLink>
             <ActiveLink href="/explore">
-              <button className="rounded-lg border-2 border-cyan-700 p-1 px-8 text-xl font-bold text-cyan-700">
-                Explore
-              </button>
+              <CustomButton title="Explore" style="cyan" />
             </ActiveLink>
           </div>
         </div>

@@ -10,7 +10,7 @@ export type MODAL_VIEW =
   | 'NFT_PREVIEW'
   | 'DONATION_VIEW'
   | 'DENY_VIEW'
-  ;
+  | 'BUY_TOKEN_VIEW';
 
 interface ModalTypes {
   isOpen: boolean;

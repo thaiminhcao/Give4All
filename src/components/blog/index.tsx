@@ -1,9 +1,13 @@
-import sortDataByProjectList from '@/helper';
-import ChatCard from '../ui/chat-card';
+import { sortDataByProjectList } from '@/helper';
+import ChatCard from '../ui/card/chat-card';
 import useBlog from './useBlog';
 export default function Blog() {
-  const { data, projectList } = useBlog();
-  const result = sortDataByProjectList(projectList ?? [], data as []);
+  const { data, projectList, functionLen } = useBlog();
+  const result = sortDataByProjectList(
+    projectList ?? [],
+    data as [],
+    functionLen
+  );
   return (
     <>
       <div className="mx-auto w-full max-w-6xl space-y-10">
